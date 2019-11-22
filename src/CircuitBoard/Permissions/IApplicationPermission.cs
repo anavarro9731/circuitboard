@@ -2,7 +2,7 @@
 
 namespace CircuitBoard.Permissions
 {
-    public interface IApplicationPermission
+    public interface IApplicationPermission : IHaveScope
     {
         int DisplayOrder { get; set; }
 
