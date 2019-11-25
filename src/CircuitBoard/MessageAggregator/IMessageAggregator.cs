@@ -1,4 +1,5 @@
-﻿using CircuitBoard.Messages;
+﻿using System.Collections.Generic;
+using CircuitBoard.Messages;
 
 namespace CircuitBoard.MessageAggregator
 {
