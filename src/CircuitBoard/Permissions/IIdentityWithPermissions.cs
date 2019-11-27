@@ -12,6 +12,6 @@ namespace CircuitBoard.Permissions
 
         string UserName { get; set; }
 
-        bool HasPermission(IPermission permissionInstance);
+        bool HasPermission(IPermission permission);
     }
 }

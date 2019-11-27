@@ -11,6 +11,8 @@ namespace CircuitBoard.Permissions
             ScopeReferenceCreatedOn = addedOn;
         }
 
+        public ScopeReference() { }
+
         public Guid ScopeObjectId { get; }
 
         public string ScopeObjectType { get; }
