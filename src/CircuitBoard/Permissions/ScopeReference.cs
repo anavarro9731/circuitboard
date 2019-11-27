@@ -13,11 +13,11 @@ namespace CircuitBoard.Permissions
 
         public ScopeReference() { }
 
-        public Guid ScopeObjectId { get; }
+        public Guid ScopeObjectId { get; set; }
 
-        public string ScopeObjectType { get; }
+        public string ScopeObjectType { get; set; }
 
-        public DateTime ScopeReferenceCreatedOn { get; }
+        public DateTime ScopeReferenceCreatedOn { get; set; }
 
         public static bool operator ==(ScopeReference a, ScopeReference b)
         {
