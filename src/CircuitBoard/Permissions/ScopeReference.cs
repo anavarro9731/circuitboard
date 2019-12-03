@@ -21,25 +21,18 @@ namespace CircuitBoard.Permissions
             return !(a == b);
         }
 
-        public ScopeReference(Guid idOfScopeObject, string typeOfOwner, DateTime? addedOn = null, string referenceId = null)
+        public ScopeReference(Guid idOfScopeObject, string typeOfOwner, string scopeObjectDebugId = null)
         {
-            ScopeObjectObjectId = idOfScopeObject;
+            ScopeObjectId = idOfScopeObject;
             ScopeObjectType = typeOfOwner;
-            ReferenceId = referenceId;
-            ScopeReferenceCreatedOn = addedOn ?? DateTime.UtcNow;
+            ScopeObjectDebugId = scopeObjectDebugId;
         }
 
-        public ScopeReference()
-        {
-        }
+        public string ScopeObjectDebugId { get; set; }
 
-        public string ReferenceId { get; set; }
-
-        public Guid ScopeObjectObjectId { get; set; }
+        public Guid ScopeObjectId { get; set; }
 
         public string ScopeObjectType { get; set; }
-
-        public DateTime ScopeReferenceCreatedOn { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -59,7 +52,7 @@ namespace CircuitBoard.Permissions
         public override int GetHashCode()
         {
             var hash = 13;
-            hash = hash * 7 + ScopeObjectObjectId.GetHashCode();
+            hash = hash * 7 + ScopeObjectId.GetHashCode();
             hash = hash * 7 + ScopeObjectType.GetHashCode();
             return hash;
         }
@@ -71,7 +64,7 @@ namespace CircuitBoard.Permissions
 
         protected bool PropertiesAreEqual(ScopeReference other)
         {
-            return ScopeObjectObjectId.Equals(other.ScopeObjectObjectId) && ScopeObjectType.Equals(other.ScopeObjectType);
+            return ScopeObjectId.Equals(other.ScopeObjectId) && ScopeObjectType.Equals(other.ScopeObjectType);
         }
     }
 }
