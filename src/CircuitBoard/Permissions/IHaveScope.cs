@@ -4,6 +4,6 @@ namespace CircuitBoard.Permissions
 {
     public interface IHaveScope
     {
-        List<ScopeReference> ScopeReferences { get; set; }
+        List<ScopeReference> ScopeReferences { get; }
     }
 }
