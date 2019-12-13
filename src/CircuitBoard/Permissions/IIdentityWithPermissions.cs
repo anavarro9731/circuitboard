@@ -12,20 +12,11 @@ namespace CircuitBoard.Permissions
 
         bool HasPermission(IPermission permission);
 
-        IList<IPermissionInstance> AsIPermissionInstances();
+        void AddPermission(IPermissionInstance permissionInstance);
 
-    }
+        void RemovePermission(IPermissionInstance permissionInstance);
 
-    public interface IIdentityWithPermissions<T> where T: IPermissionInstance, IIdentityWithPermissions
-    {
-        // ReSharper disable once InconsistentNaming
-        Guid id { get; set; } //lowercase to support entities persisted in cosmosdb, grr!
+        IList<IPermissionInstance> PermissionInstances { get; }
 
-        List<T> Permissions { get; set; }
-
-        string UserName { get; set; }
-
-        
-        bool HasPermission(IPermission permission);
     }
 }
