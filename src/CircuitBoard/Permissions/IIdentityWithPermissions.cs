@@ -16,7 +16,7 @@ namespace CircuitBoard.Permissions
 
         void RemovePermission(IPermissionInstance permissionInstance);
 
-        IList<IPermissionInstance> PermissionInstances { get; }
+        IEnumerable<IPermissionInstance> PermissionInstances { get; }
 
     }
 }
