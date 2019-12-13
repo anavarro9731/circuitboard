@@ -11,6 +11,9 @@ namespace CircuitBoard.Permissions
         string UserName { get; set; }
 
         bool HasPermission(IPermission permission);
+
+        IList<IPermissionInstance> AsIPermissionInstances();
+
     }
 
     public interface IIdentityWithPermissions<T> where T: IPermissionInstance, IIdentityWithPermissions
@@ -22,6 +25,7 @@ namespace CircuitBoard.Permissions
 
         string UserName { get; set; }
 
+        
         bool HasPermission(IPermission permission);
     }
 }
