@@ -4,6 +4,12 @@ namespace CircuitBoard.Permissions
 {
     public class ScopeReference : IEquatable<ScopeReference>
     {
+
+        public ScopeReference()
+        {
+            //serialiser
+        }
+
         public static bool operator ==(ScopeReference a, ScopeReference b)
         {
             // If both are null, or both are same instance, return true.
