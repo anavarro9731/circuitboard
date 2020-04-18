@@ -3,25 +3,28 @@ Import-Module ".\load-modules.psm1" -Verbose -Global -Force
 Remove-Item ".\load-modules.psm1" -Verbose -Recurse
 Load-Modules
 
-
-
 #expose this function like a CmdLet
 function global:Run {
-
 
 	Param(
 		[switch]$PrepareNewVersion,
 		[switch]$BuildAndTest,
 		[switch]$PackAndPublish,
-        [Alias('k')]
-        [string] $nugetApiKey
+        [Alias('nuget-key')]
+        [string] $nugetApiKey,
+        [Alias('ado-pat')]
+        [string] $azureDevopsPat,
+        [string] $forceVersion
 	)
 	
 	if ($PrepareNewVersion) {
         Prepare-NewVersion -projects @(
             "CircuitBoard"
-        )
-	}
+        ) `
+        -githubUserName "anavarro9731" `
+        -repository "circuitboard" `
+        -forceVersion $forceVersion
+    	}
 
 	if ($BuildAndTest) {
 		Build-And-Test -testProjects @(
@@ -29,13 +32,11 @@ function global:Run {
 	}
 
     if ($PackAndPublish) {
-        Pack-And-Publish -standardProjects @(
+        Pack-And-Publish -allProjects @(
             "CircuitBoard"       	         	    			
-        ) -unlistedProjects @(
         ) `
-        -nugetFeedUri "https://www.nuget.org/api/v2/package" `
-        -nugetSymbolFeedUri "https://www.nuget.org/api/v2/package" `
-        -nugetApiKey $nugetApiKey `
-        -originUrl $originUrl
+        -unlistedProjects @(
+        ) `
+        -nugetApiKey $nugetApiKey
     }
 }
