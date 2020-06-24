@@ -12,3 +12,4 @@ namespace CircuitBoard.Security
 
         Guid PermissionRequiredToAdministerThisPermission { get; set; }
     }
+}
