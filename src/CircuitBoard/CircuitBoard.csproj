@@ -5,7 +5,7 @@
     <Authors>Aaron Navarro</Authors>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <PackageProjectUrl>https://github.com/anavarro9731/</PackageProjectUrl>
-    <Version>2.6.0-alpha</Version>
+    <Version>2.7.0-alpha</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 </Project>
