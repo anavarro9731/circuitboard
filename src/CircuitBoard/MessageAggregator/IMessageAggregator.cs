@@ -16,5 +16,7 @@ namespace CircuitBoard.MessageAggregator
         IPropogateMessages<TEvent> CollectAndForward<TEvent>(TEvent message) where TEvent : IMessage;
 
         void Clear();
+
+        void Remove(IMessage message);
     }
 }
