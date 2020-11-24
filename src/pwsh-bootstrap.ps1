@@ -37,6 +37,7 @@ function global:Run {
         ) `
         -unlistedProjects @(
         ) `
-        -nugetApiKey $nugetApiKey
+        -nugetApiKey $nugetApiKey `
+        -nugetFeedUri "https://api.nuget.org/v3/index.json"
     }
 }
