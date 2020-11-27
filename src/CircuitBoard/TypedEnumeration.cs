@@ -5,7 +5,8 @@ using System.Reflection;
 
 namespace CircuitBoard
 {
-    public class Enumeration<T> : Enumeration where T : Enumeration, new()
+    //* the typed version is here to facilitate static usage and intellisense
+    public class TypedEnumeration<T> : Enumeration where T : Enumeration, new()
     {
         public static T Create(string key, string value)
         {
@@ -17,12 +18,46 @@ namespace CircuitBoard
             return t;
         }
 
-        public static IEnumerable<T> GetAll() => GetAll<T>();
+        public static IEnumerable<T> GetAllInstances() => EnumerationHelpers.GetStaticInstances<T>();
 
-        public static T FromKey(string key) => FromKey<T>(key);
-
-        public static string ListToString() => GetAll().Select(x => x.Key).Aggregate((x, y) => $"{x},{y}");
+        public static T GetInstanceFromKey(string key) => EnumerationHelpers.ToTypedInstance<T>(key);
     }
+
+    public static class EnumerationHelpers
+    {
+        public static T ToTypedInstance<T>(string key) where T : Enumeration, new()
+        {
+            var matchingItem = GetStaticInstances<T>().FirstOrDefault(i => i.Key == key);
+
+            if (matchingItem == null)
+            {
+                var message = $"The key '{key}' is not found among enumerations of type {typeof(T)}";
+                throw new ApplicationException(message);
+            }
+
+            return matchingItem;
+        }
+        
+        public static T ToTypedInstance<T>(Enumeration e) where T : Enumeration, new()
+        {
+            return ToTypedInstance<T>(e.Key);
+        }
+
+        public static IEnumerable<T> GetStaticInstances<T>() where T : Enumeration, new()
+        {
+            var type = typeof(T);
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+
+            foreach (var info in fields)
+            {
+                var instance = new T();
+                var locatedValue = info.GetValue(instance) as T;
+
+                if (locatedValue != null) yield return locatedValue;
+            }
+        }
+    }
+
 
     /// <summary>
     ///     https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types
@@ -37,6 +72,7 @@ namespace CircuitBoard
 
         public Enumeration()
         {
+            //* serialiser only
         }
 
         public bool Active { get; set; }
@@ -62,32 +98,6 @@ namespace CircuitBoard
 
         public static bool Equals(Enumeration x, Enumeration y) => x?.Key == y?.Key;
 
-        public static T FromDisplayName<T>(string displayName) where T : Enumeration, new()
-        {
-            var matchingItem = parse<T, string>(displayName, "display name", item => item.Value == displayName);
-            return matchingItem;
-        }
-
-        public static T FromKey<T>(string value) where T : Enumeration, new()
-        {
-            var matchingItem = parse<T, string>(value, "value", item => item.Key == value);
-            return matchingItem;
-        }
-
-        public static IEnumerable<T> GetAll<T>() where T : Enumeration, new()
-        {
-            var type = typeof(T);
-            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-
-            foreach (var info in fields)
-            {
-                var instance = new T();
-                var locatedValue = info.GetValue(instance) as T;
-
-                if (locatedValue != null) yield return locatedValue;
-            }
-        }
-
         public static bool operator ==(Enumeration left, Enumeration right) => Equals(left, right);
 
         public static bool operator !=(Enumeration left, Enumeration right) => !Equals(left, right);
@@ -111,19 +121,6 @@ namespace CircuitBoard
             }
         }
 
-        public override string ToString() => $"{Value} ({Key}) {Active}";
-
-        private static T parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration, new()
-        {
-            var matchingItem = GetAll<T>().FirstOrDefault(predicate);
-
-            if (matchingItem == null)
-            {
-                var message = string.Format("'{0}' is not a valid {1} in {2}", value, description, typeof(T));
-                throw new ApplicationException(message);
-            }
-
-            return matchingItem;
-        }
+        public override string ToString() => $"{Value} ({Key})";
     }
 }
