@@ -14,6 +14,7 @@ namespace CircuitBoard
     {
         public static EnumerationFlags AddFlag<T>(this EnumerationFlags flags, T value) where T : Enumeration
         {
+            if (flags.MaxSelections.HasValue && flags.SelectedKeys.Count == flags.MaxSelections.Value) throw new ArgumentOutOfRangeException($"Cannot add item, max selection count of {flags.MaxSelections} already reached");
             if (flags.SelectedKeys.Contains(value.Key)) throw new ArgumentException("State already flagged");
 
             flags.SelectedKeys.Add(value.Key);
@@ -43,19 +44,22 @@ namespace CircuitBoard
 
     public class EnumerationAndFlags<T> : EnumerationAndFlags where T : Enumeration, new()
     {
-        public EnumerationAndFlags(T initialState)
+        public EnumerationAndFlags(T initialState) : base(initialState)
         {
             AllEnumerations = EnumerationHelpers.GetStaticInstances<T>().Cast<Enumeration>().ToList();
-            this.AddFlag(initialState);
+        }
+
+        public EnumerationAndFlags()
+        {
         }
     }
 
     public class EnumerationAndFlags : EnumerationFlags
     {
-        public EnumerationAndFlags(Enumeration initialState, List<Enumeration> allEnumerations = null)
+        public EnumerationAndFlags(Enumeration initialState, List<Enumeration> allEnumerations = null) :
+            base(initialState)
         {
             AllEnumerations = allEnumerations;
-            this.AddFlag(initialState);
         }
 
         public EnumerationAndFlags()
@@ -67,9 +71,13 @@ namespace CircuitBoard
 
     public class EnumerationFlags
     {
+        
+        public long? MaxSelections { get; set; }
+
         public EnumerationFlags(Enumeration initialState)
         {
-            this.AddFlag(initialState);
+                this.AddFlag(initialState);    
+            
         }
 
         public EnumerationFlags()
