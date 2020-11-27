@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CircuitBoard;
 using Newtonsoft.Json;
 using Xunit;
@@ -52,6 +53,22 @@ namespace Soap.UnitTests
             public void ItShouldContainTheDefaultState() => Assert.True(x.HasFlag(StatesSample.One));
         }
 
+        public class WhenWeViolateFlagLimit
+        {
+            private readonly EnumerationFlags x;
+
+            public WhenWeViolateFlagLimit()
+            {
+                x = new EnumerationFlags(StatesSample.One)
+                {
+                    MaxSelections = 1
+                };
+            }
+
+            [Fact]
+            public void ItShouldError() => Assert.Throws<ArgumentOutOfRangeException>(() => x.AddFlag(StatesSample.Two));
+        }
+
         public class WhenWeDeserialize
         {
             [Fact]
@@ -87,8 +104,8 @@ namespace Soap.UnitTests
                 x.RemoveFlag(StatesSample.One);
             }
         }
-        
-        
+
+
         public class CanTakeEnumerations
         {
             [Fact]
@@ -104,7 +121,7 @@ namespace Soap.UnitTests
                 Assert.Equal(StatesSample.One, y.AllEnumerations.First());
             }
         }
-        
+
         public class CanBeUsedWithoutEnumerations
         {
             [Fact]
