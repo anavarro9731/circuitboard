@@ -1,18 +1,17 @@
-﻿using CircuitBoard;
+﻿using System.Linq;
+using CircuitBoard;
+using Newtonsoft.Json;
+using Xunit;
 
 namespace Soap.UnitTests
 {
-    using System.Linq;
-    using Newtonsoft.Json;
-    using Xunit;
-
-    public class StatesSample : Enumeration<StatesSample>
+    public class StatesSample : TypedEnumeration<StatesSample>
     {
-        public static StatesSample One = Create("1", nameof(StatesSample.One));
+        public static StatesSample One = Create("1", nameof(One));
 
-        public static StatesSample Three = Create("3", nameof(StatesSample.Three));
+        public static StatesSample Three = Create("3", nameof(Three));
 
-        public static StatesSample Two = Create("2", nameof(StatesSample.Two));
+        public static StatesSample Two = Create("2", nameof(Two));
     }
 
     public class EnumerationFlagsTests
@@ -23,18 +22,18 @@ namespace Soap.UnitTests
 
             public WhenWeAddASecondState()
             {
-                this.x = new EnumerationFlags(StatesSample.One);
-                this.x.AddFlag(StatesSample.Two);
+                x = new EnumerationFlags(StatesSample.One);
+                x.AddFlag(StatesSample.Two);
             }
 
             [Fact]
-            public void ItShouldContainTheDefaultState() => Assert.True(this.x.HasFlag(StatesSample.One));
+            public void ItShouldContainTheDefaultState() => Assert.True(x.HasFlag(StatesSample.One));
 
             [Fact]
-            public void ItShouldContainTheNewState() => Assert.True(this.x.HasFlag(StatesSample.Two));
+            public void ItShouldContainTheNewState() => Assert.True(x.HasFlag(StatesSample.Two));
 
             [Fact]
-            public void ItShouldNotContainAnyOtherStates() => Assert.Equal(2, this.x.Count());
+            public void ItShouldNotContainAnyOtherStates() => Assert.Equal(2, x.Count());
         }
 
         public class WhenWeCreateAFlaggedState
@@ -43,14 +42,14 @@ namespace Soap.UnitTests
 
             public WhenWeCreateAFlaggedState()
             {
-                this.x = new EnumerationFlags(StatesSample.One);
+                x = new EnumerationFlags(StatesSample.One);
             }
 
             [Fact]
-            public void ItShouldContainNoOtherStates() => Assert.Equal(1, this.x.Count());
+            public void ItShouldContainNoOtherStates() => Assert.Equal(1, x.Count());
 
             [Fact]
-            public void ItShouldContainTheDefaultState() => Assert.True(this.x.HasFlag(StatesSample.One));
+            public void ItShouldContainTheDefaultState() => Assert.True(x.HasFlag(StatesSample.One));
         }
 
         public class WhenWeDeserialize
@@ -64,7 +63,7 @@ namespace Soap.UnitTests
                 Assert.True(y.HasFlag(StatesSample.One));
             }
         }
-        
+
         public class WhenWeConvertIntoFlagsAndBackToEnumerationItems
         {
             [Fact]
@@ -74,8 +73,8 @@ namespace Soap.UnitTests
                 x.AddFlag(StatesSample.Three);
                 var json = JsonConvert.SerializeObject(x);
                 var y = JsonConvert.DeserializeObject<EnumerationFlags>(json);
-                Assert.Equal(2, y.AsEnumerations<StatesSample>().Count);
-                Assert.Equal(StatesSample.Three, y.AsEnumerations<StatesSample>().Last());
+                Assert.Equal(2, y.SelectedKeys.Count);
+                Assert.Equal(StatesSample.Three, StatesSample.GetInstanceFromKey(y.SelectedKeys.Last()));
             }
         }
 
@@ -88,6 +87,39 @@ namespace Soap.UnitTests
                 x.RemoveFlag(StatesSample.One);
             }
         }
+        
+        
+        public class CanTakeEnumerations
+        {
+            [Fact]
+            public void ItShouldNotThrowAnError()
+            {
+                var x = new EnumerationAndFlags(StatesSample.One, StatesSample.GetAllInstances().Cast<Enumeration>().ToList());
+                x.AddFlag(StatesSample.Three);
+                var json = JsonConvert.SerializeObject(x);
+                var y = JsonConvert.DeserializeObject<EnumerationAndFlags>(json);
+                Assert.Equal(2, y.SelectedKeys.Count);
+                Assert.Equal(StatesSample.Three, StatesSample.GetInstanceFromKey(y.SelectedKeys.Last()));
+                Assert.Equal(3, y.AllEnumerations.Count);
+                Assert.Equal(StatesSample.One, y.AllEnumerations.First());
+            }
+        }
+        
+        public class CanBeUsedWithoutEnumerations
+        {
+            [Fact]
+            public void ItShouldNotThrowAnError()
+            {
+                var x = new EnumerationAndFlags(StatesSample.One);
+                Assert.Null(x.AllEnumerations);
+                var json = JsonConvert.SerializeObject(x);
+                var y = JsonConvert.DeserializeObject<EnumerationAndFlags>(json);
+                Assert.Equal(1, y.SelectedKeys.Count);
+                Assert.Equal(StatesSample.One, StatesSample.GetInstanceFromKey(y.SelectedKeys.Last()));
+                Assert.Null(x.AllEnumerations);
+            }
+        }
+
 
         public class WhenWeRemoveAState
         {
@@ -95,16 +127,16 @@ namespace Soap.UnitTests
 
             public WhenWeRemoveAState()
             {
-                this.x = new EnumerationFlags(StatesSample.One);
-                this.x.AddFlag(StatesSample.Two);
-                this.x.RemoveFlag(StatesSample.One);
+                x = new EnumerationFlags(StatesSample.One);
+                x.AddFlag(StatesSample.Two);
+                x.RemoveFlag(StatesSample.One);
             }
 
             [Fact]
-            public void ItShouldNotRemoveAnyOtherStates() => Assert.Equal(1, this.x.Count());
+            public void ItShouldNotRemoveAnyOtherStates() => Assert.Equal(1, x.Count());
 
             [Fact]
-            public void ItShouldRemoveTheState() => Assert.True(!this.x.HasFlag(StatesSample.One));
+            public void ItShouldRemoveTheState() => Assert.True(!x.HasFlag(StatesSample.One));
         }
     }
 }

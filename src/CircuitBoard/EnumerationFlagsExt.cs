@@ -1,36 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CircuitBoard
 {
-    /* stores a bunch of different flags in a single serialisable class
-     avoids lots of bool properties and can also be used to represent 
-     a current state in a state-machine
-     
+    /* stores a list of "selected values" from a typed enumeration in a single serialisable class
+     could be used to:
+        avoids lots of bool properties
+        represent a single current state in a state-machine
+        represent a selection of items from a list
      */
-    public static class EnumerationExt
+    public static class EnumerationFlagsMethods
     {
         public static EnumerationFlags AddFlag<T>(this EnumerationFlags flags, T value) where T : Enumeration
         {
-            if (flags.Keys.Contains(value.Key)) throw new ArgumentException("State already flagged");
+            if (flags.SelectedKeys.Contains(value.Key)) throw new ArgumentException("State already flagged");
 
-            flags.Keys.Add(value.Key);
+            flags.SelectedKeys.Add(value.Key);
 
             return flags;
         }
 
-        public static IReadOnlyList<T> AsEnumerations<T>(this EnumerationFlags flags) where T : Enumeration, new() =>
-            flags.Keys.ConvertAll(Enumeration.FromKey<T>);
+        public static int Count(this EnumerationFlags flags) => flags.SelectedKeys.Count;
 
-        public static int Count(this EnumerationFlags flags) => flags.Keys.Count;
+        public static bool HasFlag(this EnumerationFlags flags, Enumeration item) => flags.SelectedKeys.Contains(item.Key);
 
-        public static bool HasFlag(this EnumerationFlags flags, Enumeration item) => flags.Keys.Contains(item.Key);
-
-        public static bool HasFlag(this EnumerationFlags flags, string key) => flags.Keys.Exists(x => x == key);
+        public static bool HasFlag(this EnumerationFlags flags, string key) => flags.SelectedKeys.Exists(x => x == key);
 
         public static EnumerationFlags RemoveFlag<T>(this EnumerationFlags flags, T value) where T : Enumeration
         {
-            flags.Keys.Remove(value.Key);
+            flags.SelectedKeys.Remove(value.Key);
 
             return flags;
         }
@@ -42,7 +41,30 @@ namespace CircuitBoard
         }
     }
 
-    //- doesn't inherit from List<string> to ensure reliable serialisation back to EnumerationFlags
+    public class EnumerationAndFlags<T> : EnumerationAndFlags where T : Enumeration, new()
+    {
+        public EnumerationAndFlags(T initialState)
+        {
+            AllEnumerations = EnumerationHelpers.GetStaticInstances<T>().Cast<Enumeration>().ToList();
+            this.AddFlag(initialState);
+        }
+    }
+
+    public class EnumerationAndFlags : EnumerationFlags
+    {
+        public EnumerationAndFlags(Enumeration initialState, List<Enumeration> allEnumerations = null)
+        {
+            AllEnumerations = allEnumerations;
+            this.AddFlag(initialState);
+        }
+
+        public EnumerationAndFlags()
+        {
+        }
+
+        public List<Enumeration> AllEnumerations { get; set; }
+    }
+
     public class EnumerationFlags
     {
         public EnumerationFlags(Enumeration initialState)
@@ -54,6 +76,7 @@ namespace CircuitBoard
         {
         }
 
-        public List<string> Keys { get; set; } = new List<string>();
+        //* don't inherit from List<string> to ensure simplest serialisation
+        public List<string> SelectedKeys { get; set; } = new List<string>();
     }
 }
