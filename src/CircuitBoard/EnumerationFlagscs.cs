@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CircuitBoard
 {
@@ -40,33 +39,6 @@ namespace CircuitBoard
             flags.RemoveFlag(old);
             flags.AddFlag(@new);
         }
-    }
-
-    public class EnumerationAndFlags<T> : EnumerationAndFlags where T : Enumeration, new()
-    {
-        public EnumerationAndFlags(T initialState) : base(initialState)
-        {
-            AllEnumerations = EnumerationHelpers.GetStaticInstances<T>().Cast<Enumeration>().ToList();
-        }
-
-        public EnumerationAndFlags()
-        {
-        }
-    }
-
-    public class EnumerationAndFlags : EnumerationFlags
-    {
-        public EnumerationAndFlags(Enumeration initialState, List<Enumeration> allEnumerations = null) :
-            base(initialState)
-        {
-            AllEnumerations = allEnumerations;
-        }
-
-        public EnumerationAndFlags()
-        {
-        }
-
-        public List<Enumeration> AllEnumerations { get; set; }
     }
 
     public class EnumerationFlags
