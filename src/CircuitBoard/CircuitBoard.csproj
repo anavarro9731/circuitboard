@@ -3,7 +3,7 @@
     <Copyright>Copyright (c) 2017 Aaron Navarro</Copyright>
     <Description>Cross-Library messaging and permissions</Description>
     <Authors>Aaron Navarro</Authors>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net461</TargetFrameworks>
     <PackageProjectUrl>https://github.com/anavarro9731/</PackageProjectUrl>
     <Version>4.2.0-alpha</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
