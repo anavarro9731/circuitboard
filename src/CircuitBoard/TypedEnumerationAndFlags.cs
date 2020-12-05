@@ -8,9 +8,15 @@ namespace CircuitBoard
         {
             AllEnumerations =  TypedEnumeration<T>.GetAllInstances().Cast<Enumeration>().ToList();
         }
+        
+        public TypedEnumerationAndFlags(bool populateAllEnumerations = false)
+        {
+            if (populateAllEnumerations) AllEnumerations =  TypedEnumeration<T>.GetAllInstances().Cast<Enumeration>().ToList();
+        }
 
         public TypedEnumerationAndFlags()
         {
+            
         }
     }
 }
