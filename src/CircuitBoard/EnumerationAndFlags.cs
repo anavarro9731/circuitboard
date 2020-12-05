@@ -9,6 +9,11 @@ namespace CircuitBoard
         {
             AllEnumerations = allEnumerations;
         }
+        
+        public EnumerationAndFlags(List<Enumeration> allEnumerations)
+        {
+            AllEnumerations = allEnumerations;
+        }
 
         public EnumerationAndFlags()
         {
