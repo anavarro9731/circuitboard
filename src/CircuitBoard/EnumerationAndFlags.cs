@@ -11,6 +11,10 @@ namespace CircuitBoard
             AllEnumerations = allEnumerations;
         }
 
+        public EnumerationAndFlags()
+        {
+        }
+
         public List<Enumeration> AllEnumerations { get; set; }
     }
 }

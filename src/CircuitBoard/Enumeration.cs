@@ -17,7 +17,6 @@ namespace CircuitBoard
 
         public Enumeration()
         {
-            //* serialiser only
         }
 
         public bool? Active { get; set; }

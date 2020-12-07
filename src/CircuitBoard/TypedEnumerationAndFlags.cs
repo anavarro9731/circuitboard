@@ -10,5 +10,9 @@ namespace CircuitBoard
                 allowMultipleSelections)
         {
         }
+
+        public TypedEnumerationAndFlags()
+        {
+        }
     }
 }
