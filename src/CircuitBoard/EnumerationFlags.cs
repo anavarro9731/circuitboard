@@ -50,7 +50,7 @@ namespace CircuitBoard
             AllowMultipleSelections = allowMultipleSelections;
         }
 
-        public bool? AllowMultipleSelections { get; set; }
+        public bool AllowMultipleSelections { get; set; }
 
         //* don't inherit from List<string> to ensure simplest serialisation
         public List<string> SelectedKeys { get; set; } = new List<string>();
