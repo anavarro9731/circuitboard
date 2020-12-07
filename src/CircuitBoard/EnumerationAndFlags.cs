@@ -4,19 +4,11 @@ namespace CircuitBoard
 {
     public class EnumerationAndFlags : EnumerationFlags
     {
-        public EnumerationAndFlags(Enumeration initialState, List<Enumeration> allEnumerations = null) :
-            base(initialState)
+        public EnumerationAndFlags(Enumeration initialState = null, List<Enumeration> allEnumerations = null,
+            bool allowMultipleSelections = true) :
+            base(initialState, allowMultipleSelections)
         {
             AllEnumerations = allEnumerations;
-        }
-        
-        public EnumerationAndFlags(List<Enumeration> allEnumerations)
-        {
-            AllEnumerations = allEnumerations;
-        }
-
-        public EnumerationAndFlags()
-        {
         }
 
         public List<Enumeration> AllEnumerations { get; set; }

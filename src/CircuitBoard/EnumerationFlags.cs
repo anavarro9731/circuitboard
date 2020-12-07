@@ -13,7 +13,8 @@ namespace CircuitBoard
     {
         public static EnumerationFlags AddFlag<T>(this EnumerationFlags flags, T value) where T : Enumeration
         {
-            if (flags.MaxSelections.HasValue && flags.SelectedKeys.Count == flags.MaxSelections.Value) throw new ArgumentOutOfRangeException($"Cannot add item, max selection count of {flags.MaxSelections} already reached");
+            if (flags.AllowMultipleSelections == false && flags.SelectedKeys.Count == 1)
+                throw new ArgumentOutOfRangeException("Cannot add item, multiple selections are not allowed");
             if (flags.SelectedKeys.Contains(value.Key)) throw new ArgumentException("State already flagged");
 
             flags.SelectedKeys.Add(value.Key);
@@ -43,18 +44,13 @@ namespace CircuitBoard
 
     public class EnumerationFlags
     {
-        
-        public long? MaxSelections { get; set; }
-
-        public EnumerationFlags(Enumeration initialState)
+        public EnumerationFlags(Enumeration initialState = null, bool allowMultipleSelections = true)
         {
-                this.AddFlag(initialState);    
-            
+            if (initialState != null) this.AddFlag(initialState);
+            AllowMultipleSelections = allowMultipleSelections;
         }
 
-        public EnumerationFlags()
-        {
-        }
+        public bool? AllowMultipleSelections { get; set; }
 
         //* don't inherit from List<string> to ensure simplest serialisation
         public List<string> SelectedKeys { get; set; } = new List<string>();
