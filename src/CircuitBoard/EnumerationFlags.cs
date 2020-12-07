@@ -49,6 +49,8 @@ namespace CircuitBoard
             if (initialState != null) this.AddFlag(initialState);
             AllowMultipleSelections = allowMultipleSelections;
         }
+        
+        public EnumerationFlags() {}
 
         public bool AllowMultipleSelections { get; set; }
 
