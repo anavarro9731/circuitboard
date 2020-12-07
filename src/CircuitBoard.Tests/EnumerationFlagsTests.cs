@@ -59,10 +59,7 @@ namespace Soap.UnitTests
 
             public WhenWeViolateFlagLimit()
             {
-                x = new EnumerationFlags(StatesSample.One)
-                {
-                    MaxSelections = 1
-                };
+                x = new EnumerationFlags(StatesSample.One, false);
             }
 
             [Fact]

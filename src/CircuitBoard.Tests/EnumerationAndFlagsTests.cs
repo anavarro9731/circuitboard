@@ -24,7 +24,7 @@ namespace Soap.UnitTests
         [Fact]
         public void ItShouldNotThrowAnErrorWhenTyped()
         {
-            var x = new TypedEnumerationAndFlags<StatesSample>(StatesSample.One);
+            var x = new TypedEnumerationAndFlags<StatesSample>(StatesSample.One, true);
             x.AddFlag(StatesSample.Three);
             var json = JsonConvert.SerializeObject(x);
             var y = JsonConvert.DeserializeObject<TypedEnumerationAndFlags<StatesSample>>(json);
@@ -40,7 +40,7 @@ namespace Soap.UnitTests
         [Fact]
         public void ItShouldNotThrowAnError()
         {
-            var x = new TypedEnumerationAndFlags<StatesSample>(StatesSample.One);
+            var x = new TypedEnumerationAndFlags<StatesSample>(StatesSample.One, true);
             x.AddFlag(StatesSample.Three);
             var json = JsonConvert.SerializeObject(x);
             var y = JsonConvert.DeserializeObject<EnumerationAndFlags>(json);
