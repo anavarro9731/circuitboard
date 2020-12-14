@@ -52,7 +52,8 @@ namespace CircuitBoard
         
         public EnumerationFlags() {}
 
-        public bool AllowMultipleSelections { get; set; }
+        //* nullable for soap
+        public bool? AllowMultipleSelections { get; set; }
 
         //* don't inherit from List<string> to ensure simplest serialisation
         public List<string> SelectedKeys { get; set; } = new List<string>();
