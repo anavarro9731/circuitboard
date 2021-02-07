@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CircuitBoard
 {
@@ -11,6 +12,7 @@ namespace CircuitBoard
      */
     public static class EnumerationFlagsMethods
     {
+
         public static EnumerationFlags AddFlag<T>(this EnumerationFlags flags, T value) where T : Enumeration
         {
             if (flags.AllowMultipleSelections == false && flags.SelectedKeys.Count == 1)
@@ -57,5 +59,18 @@ namespace CircuitBoard
 
         //* don't inherit from List<string> to ensure simplest serialisation
         public List<string> SelectedKeys { get; set; } = new List<string>();
+    }
+    
+    
+    public class TypedEnumerationFlags<T> : EnumerationFlags where T : Enumeration, new()
+    {
+        public TypedEnumerationFlags(T initialState = null, bool allowMultipleSelections = true)
+        {
+            if (initialState != null) this.AddFlag(initialState);
+            AllowMultipleSelections = allowMultipleSelections;
+        }
+        
+        public TypedEnumerationFlags() {}
+        
     }
 }
