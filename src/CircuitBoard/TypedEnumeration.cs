@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace CircuitBoard
 {
-    //* the typed version is here to facilitate static usage and intellisense
+    //* the typed version is here to facilitate static constraints and intellisense
     public class TypedEnumeration<T> : Enumeration where T : Enumeration, new()
     {
         public static T Create(string key, string value)

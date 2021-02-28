@@ -5,7 +5,7 @@ using System.Linq;
 namespace CircuitBoard
 {
     /// <summary>
-    ///     https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types
+    ///     original idea and code from https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types
     /// </summary>
     public class Enumeration : IComparable, IEquatable<Enumeration>, IComparer<Enumeration>, IEqualityComparer<Enumeration>
     {
@@ -66,7 +66,7 @@ namespace CircuitBoard
         }
 
         public override string ToString() => $"{Value} ({Key})";
-        
+
         public static T ToTypedInstance<T>(string key) where T : Enumeration, new()
         {
             var matchingItem = TypedEnumeration<T>.GetAllInstances().FirstOrDefault(i => i.Key == key);
