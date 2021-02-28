@@ -10,6 +10,7 @@ function global:Run {
 		[switch]$PrepareNewVersion,
 		[switch]$BuildAndTest,
 		[switch]$PackAndPublish,
+        [switch]$CreateRelease,
         [Alias('nuget-key')]
         [string] $nugetApiKey,
         [Alias('ado-pat')]
@@ -39,5 +40,13 @@ function global:Run {
         ) `
         -nugetApiKey $nugetApiKey `
         -nugetFeedUri "https://api.nuget.org/v3/index.json"
+    }
+
+    if ($CreateRelease) {
+        Create-Release -projects @(
+        "CircuitBoard"
+        ) `
+        -githubUserName "anavarro9731" `
+        -repository "soap"
     }
 }
