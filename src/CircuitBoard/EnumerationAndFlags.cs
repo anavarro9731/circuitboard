@@ -5,11 +5,11 @@ namespace CircuitBoard
 {
     public class EnumerationAndFlags : EnumerationFlags
     {
-        public EnumerationAndFlags(Enumeration initialState = null, List<Enumeration> allEnumerations = null,
-            bool allowMultipleSelections = true) :
-            base(initialState, allowMultipleSelections)
+        public EnumerationAndFlags(Enumeration initialState = null, List<Enumeration> allEnumerations = null) :
+            base(initialState)
         {
             AllEnumerations = allEnumerations;
+            AllowMultipleSelections = false;
         }
 
         public EnumerationAndFlags()

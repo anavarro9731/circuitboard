@@ -11,7 +11,10 @@ namespace Soap.UnitTests
         [Fact]
         public void ItShouldNotThrowAnErrorWhenUnTyped()
         {
-            var x = new EnumerationAndFlags(StatesSample.One, StatesSample.GetAllInstances().Cast<Enumeration>().ToList());
+            var x = new EnumerationAndFlags(StatesSample.One, StatesSample.GetAllInstances().Cast<Enumeration>().ToList())
+            {
+                AllowMultipleSelections = true
+            };
             x.AddFlag(StatesSample.Three);
             var json = JsonConvert.SerializeObject(x);
             var y = JsonConvert.DeserializeObject<EnumerationAndFlags>(json);
@@ -24,7 +27,10 @@ namespace Soap.UnitTests
         [Fact]
         public void ItShouldNotThrowAnErrorWhenTyped()
         {
-            var x = new TypedEnumerationAndFlags<StatesSample>(StatesSample.One, true);
+            var x = new TypedEnumerationAndFlags<StatesSample>(StatesSample.One, true)
+            {
+                AllowMultipleSelections = true
+            };
             x.AddFlag(StatesSample.Three);
             var json = JsonConvert.SerializeObject(x);
             var y = JsonConvert.DeserializeObject<TypedEnumerationAndFlags<StatesSample>>(json);
@@ -40,7 +46,10 @@ namespace Soap.UnitTests
         [Fact]
         public void ItShouldNotThrowAnError()
         {
-            var x = new TypedEnumerationAndFlags<StatesSample>(StatesSample.One, true);
+            var x = new TypedEnumerationAndFlags<StatesSample>(StatesSample.One, true)
+            {
+                AllowMultipleSelections = true
+            };
             x.AddFlag(StatesSample.Three);
             var json = JsonConvert.SerializeObject(x);
             var y = JsonConvert.DeserializeObject<EnumerationAndFlags>(json);

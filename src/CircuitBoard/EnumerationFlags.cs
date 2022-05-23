@@ -14,7 +14,7 @@ namespace CircuitBoard
         public static EnumerationFlags AddFlag<T>(this EnumerationFlags flags, T value) where T : Enumeration
         {
             if (flags.AllowMultipleSelections == false && flags.SelectedKeys.Count == 1)
-                throw new ArgumentOutOfRangeException("Cannot add item, multiple selections are not allowed");
+                throw new ArgumentException("Cannot add item, multiple selections are not allowed");
             if (flags.SelectedKeys.Contains(value.Key)) throw new ArgumentException("State already flagged");
 
             flags.SelectedKeys.Add(value.Key);
@@ -44,10 +44,9 @@ namespace CircuitBoard
 
     public class EnumerationFlags
     {
-        public EnumerationFlags(Enumeration initialState = null, bool allowMultipleSelections = true)
+        public EnumerationFlags(Enumeration initialState = null)
         {
             if (initialState != null) this.AddFlag(initialState);
-            AllowMultipleSelections = allowMultipleSelections;
         }
         
         public EnumerationFlags(IEnumerable<Enumeration> initialStates = null)
@@ -64,7 +63,7 @@ namespace CircuitBoard
         }
 
         //* nullable for soap
-        public bool? AllowMultipleSelections { get; set; }
+        public bool? AllowMultipleSelections { get; set; } = true;
 
         //* don't inherit from List<string> to ensure simplest serialisation
         public List<string> SelectedKeys { get; set; } = new List<string>();
