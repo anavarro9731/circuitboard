@@ -59,11 +59,14 @@ namespace Soap.UnitTests
 
             public WhenWeViolateFlagLimit()
             {
-                x = new EnumerationFlags(StatesSample.One, false);
+                x = new EnumerationFlags(StatesSample.One)
+                {
+                    AllowMultipleSelections = false
+                };
             }
 
             [Fact]
-            public void ItShouldError() => Assert.Throws<ArgumentOutOfRangeException>(() => x.AddFlag(StatesSample.Two));
+            public void ItShouldError() => Assert.Throws<ArgumentException>(() => x.AddFlag(StatesSample.Two));
         }
 
         public class WhenWeDeserialize
