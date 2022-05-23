@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace CircuitBoard
@@ -19,12 +20,15 @@ namespace CircuitBoard
         public static IEnumerable<T> GetAllInstances()
         {
             var type = typeof(T);
-            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+            
+            var fields = type.GetRuntimeFields().Where(x => x.IsPublic && x.IsStatic && x.DeclaringType == type);
+            
+            //var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
 
-            foreach (var info in fields)
+            foreach (var fieldInfo in fields)
             {
                 var instance = new T();
-                var locatedValue = info.GetValue(instance) as T;
+                var locatedValue = fieldInfo.GetValue(instance) as T;
 
                 if (locatedValue != null) yield return locatedValue;
             }
