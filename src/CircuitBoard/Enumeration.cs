@@ -74,7 +74,7 @@ namespace CircuitBoard
             if (matchingItem == null)
             {
                 var message = $"The key '{key}' is not found among enumerations of type {typeof(T)}";
-                throw new Exception(message);
+                throw new CircuitException(message);
             }
 
             return matchingItem;
