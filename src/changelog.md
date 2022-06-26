@@ -1,2 +1,2 @@
-v.5.0.0 
+v.5.0.0
 Remove allowMultipleSelections default parameter 

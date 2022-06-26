@@ -1,20 +1,20 @@
 using System;
 
-
 namespace CircuitBoard
 {
     public sealed class CircuitException : Exception
     {
-        
-        public CircuitException(string message, Guid? code = null) : base(message)
+        public CircuitException(string message, ErrorCode error = null) : base(message)
         {
-            Data.Add("Code", code);
+            Error = error;
         }
 
-        public CircuitException(string message, Exception innerException, Guid? code = null) : base(message, innerException)
+        public CircuitException(string message, Exception innerException, ErrorCode error = null) : base(message,
+            innerException)
         {
-            Data.Add("Code", code);
+            Error = error;
         }
+        
+        public ErrorCode Error { get; set; }
     }
-    
 }
