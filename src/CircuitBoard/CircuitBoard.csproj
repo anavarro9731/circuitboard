@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <Copyright>Copyright (c) 2017 Aaron Navarro</Copyright>
-    <Description>Cross-Library messaging and permissions</Description>
+    <Description>Cross-Library messaging</Description>
     <Authors>Aaron Navarro</Authors>
     <TargetFrameworks>netstandard1.1;netstandard1.4;netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageProjectUrl>https://github.com/anavarro9731/</PackageProjectUrl>
