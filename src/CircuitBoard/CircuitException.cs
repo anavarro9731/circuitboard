@@ -4,17 +4,20 @@ namespace CircuitBoard
 {
     public sealed class CircuitException : Exception
     {
-        public CircuitException(string message, ErrorCode error = null) : base(message)
+        public CircuitException(ErrorCode error) : base(error.Value)
         {
+            error.Active = true;
             Error = error;
         }
 
-        public CircuitException(string message, Exception innerException, ErrorCode error = null) : base(message,
-            innerException)
+        public CircuitException(string message) : base(message)
         {
-            Error = error;
         }
-        
+
+        public CircuitException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
         public ErrorCode Error { get; set; }
     }
 }
