@@ -67,12 +67,12 @@ namespace Soap.UnitTests
         public void ItShouldNotThrowAnError()
         {
             var x = new EnumerationAndFlags(StatesSample.One);
-            Assert.Null(x.AllEnumerations);
+            Assert.Empty(x.AllEnumerations);
             var json = JsonConvert.SerializeObject(x);
             var y = JsonConvert.DeserializeObject<EnumerationAndFlags>(json);
             Assert.Single(y.SelectedKeys);
             Assert.Equal(StatesSample.One, StatesSample.GetInstanceFromKey(y.SelectedKeys.Last()));
-            Assert.Null(x.AllEnumerations);
+            Assert.Empty(x.AllEnumerations);
         }
     }
 }
