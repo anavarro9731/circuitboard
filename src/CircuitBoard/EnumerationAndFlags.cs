@@ -8,7 +8,7 @@ namespace CircuitBoard
         public EnumerationAndFlags(Enumeration initialState = null, List<Enumeration> allEnumerations = null) :
             base(initialState)
         {
-            AllEnumerations = allEnumerations;
+            AllEnumerations = allEnumerations ?? new List<Enumeration>();
             AllowMultipleSelections = false;
         }
 
@@ -16,7 +16,7 @@ namespace CircuitBoard
         {
         }
 
-        public List<Enumeration> AllEnumerations { get; set; }
+        public List<Enumeration> AllEnumerations { get; set; } = new List<Enumeration>();
     }
 
     public static class EnumerationAndFlagsExt
