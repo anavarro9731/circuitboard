@@ -8,9 +8,13 @@ trigger:
     - src/.version
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-2019'
 
 steps:
+
+- task: UseDotNet@2
+  inputs:
+    version: '3.1.x' # string. Optional. Use when useGlobalJson = false || packageType = runtime. Version. 
 
 - powershell: |
    & $Env:BUILD_SOURCESDIRECTORY\src\pwsh-bootstrap.ps1
