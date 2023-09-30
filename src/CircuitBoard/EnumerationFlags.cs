@@ -35,10 +35,24 @@ namespace CircuitBoard
             return flags;
         }
 
-        public static void ReplaceFlag(this EnumerationFlags flags, Enumeration old, Enumeration @new)
+        public static void ReplaceFlagButOnlyIfItsSet(this EnumerationFlags flags, Enumeration old, Enumeration @new)
         {
-            flags.RemoveFlag(old);
-            flags.AddFlag(@new);
+            if (flags.HasFlag(old))
+            {
+                flags.RemoveFlag(old);
+                flags.AddFlag(@new);    
+            }
+        }
+        
+        public static void ReplaceAllFlagsWith(this EnumerationFlags flags, Enumeration @new)
+        {
+            flags.SelectedKeys = new List<string>();
+            flags.AddFlag(@new);    
+        }
+
+        public static void Clear(this EnumerationFlags flags)
+        {
+            flags.SelectedKeys = new List<string>();
         }
     }
 
