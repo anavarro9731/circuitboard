@@ -77,7 +77,7 @@ namespace CircuitBoard
                 throw new CircuitException(message);
             }
 
-            return matchingItem;
+            return (T)matchingItem.MemberwiseClone();
         }
     }
 }
